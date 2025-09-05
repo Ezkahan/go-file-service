@@ -7,16 +7,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type FileHandler struct {
-	service *usecase.FileService
+type FileHandler interface {
+	Create(c *gin.Context)
+	List(c *gin.Context)
+	Get(c *gin.Context)
+	Update(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
-func NewFileHandler(s *usecase.FileService) *FileHandler {
-	return &FileHandler{service: s}
+type fileHandler struct {
+	service usecase.FileService
+}
+
+func NewFileHandler(s usecase.FileService) FileHandler {
+	return &fileHandler{service: s}
 }
 
 // Create a new file
-func (h *FileHandler) Create(c *gin.Context) {
+func (h *fileHandler) Create(c *gin.Context) {
 	var req struct {
 		Name       string  `json:"name" binding:"required"`
 		IconPath   string  `json:"icon_path"`
@@ -39,7 +47,7 @@ func (h *FileHandler) Create(c *gin.Context) {
 }
 
 // List all files
-func (h *FileHandler) List(c *gin.Context) {
+func (h *fileHandler) List(c *gin.Context) {
 	files, err := h.service.ListFiles()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -49,7 +57,7 @@ func (h *FileHandler) List(c *gin.Context) {
 }
 
 // Get a file by ID
-func (h *FileHandler) Get(c *gin.Context) {
+func (h *fileHandler) Get(c *gin.Context) {
 	id := c.Param("id")
 	f, err := h.service.GetFile(id)
 	if err != nil {
@@ -60,7 +68,7 @@ func (h *FileHandler) Get(c *gin.Context) {
 }
 
 // Update a file
-func (h *FileHandler) Update(c *gin.Context) {
+func (h *fileHandler) Update(c *gin.Context) {
 	id := c.Param("id")
 	var req struct {
 		Name       string  `json:"name" binding:"required"`
@@ -83,7 +91,7 @@ func (h *FileHandler) Update(c *gin.Context) {
 }
 
 // Delete a file
-func (h *FileHandler) Delete(c *gin.Context) {
+func (h *fileHandler) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if err := h.service.DeleteFile(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

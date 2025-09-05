@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/ezkahan/meditation-backend/internal/config"
-	"github.com/ezkahan/meditation-backend/internal/delivery/http"
+	httpHandler "github.com/ezkahan/meditation-backend/internal/delivery/http/handlers"
 	"github.com/ezkahan/meditation-backend/internal/repository"
 	"github.com/ezkahan/meditation-backend/internal/server/router"
 	"github.com/ezkahan/meditation-backend/internal/usecase"
@@ -28,18 +28,22 @@ func RunHTTPServer() {
 	// ------------------------
 	// Repositories & Services
 	// ------------------------
-	categoryRepo := repository.NewCategoryRepo(pool)
+	categoryRepo := repository.NewCategoryRepository(pool)
 	categoryService := usecase.NewCategoryService(categoryRepo)
-	categoryHandler := http.NewCategoryHandler(categoryService)
+	categoryHandler := httpHandler.NewCategoryHandler(categoryService)
 
 	fileRepo := repository.NewFileRepo(pool)
 	fileService := usecase.NewFileService(fileRepo)
-	fileHandler := http.NewFileHandler(fileService)
+	fileHandler := httpHandler.NewFileHandler(fileService)
+
+	userRepo := repository.NewUserRepository(pool)
+	userService := usecase.NewUserService(userRepo)
+	authHandler := httpHandler.NewAuthHandler(userService)
 
 	// ------------------------
 	// Router setup
 	// ------------------------
-	r := router.SetupRouter(categoryHandler, fileHandler)
+	r := router.SetupRouter(categoryHandler, fileHandler, authHandler)
 
 	// ------------------------
 	// Start server

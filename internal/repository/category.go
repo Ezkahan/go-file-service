@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type CategoryRepo struct {
+type categoryRepository struct {
 	Pool *pgxpool.Pool
 }
 
@@ -20,12 +20,12 @@ type CategoryRepository interface {
 	Delete(id string) error
 }
 
-func NewCategoryRepo(pool *pgxpool.Pool) *CategoryRepo {
-	return &CategoryRepo{Pool: pool}
+func NewCategoryRepository(pool *pgxpool.Pool) *categoryRepository {
+	return &categoryRepository{Pool: pool}
 }
 
 // Create inserts a new category
-func (r *CategoryRepo) Create(c *domain.Category) error {
+func (r *categoryRepository) Create(c *domain.Category) error {
 	now := time.Now()
 	c.CreatedAt = now
 	c.UpdatedAt = now
@@ -39,7 +39,7 @@ func (r *CategoryRepo) Create(c *domain.Category) error {
 }
 
 // GetByID retrieves a category by UUID
-func (r *CategoryRepo) GetByID(id string) (*domain.Category, error) {
+func (r *categoryRepository) GetByID(id string) (*domain.Category, error) {
 	row := r.Pool.QueryRow(context.Background(),
 		`SELECT id, name, icon_path, parent_id, created_at, updated_at 
 		 FROM categories WHERE id=$1`, id,
@@ -53,7 +53,7 @@ func (r *CategoryRepo) GetByID(id string) (*domain.Category, error) {
 }
 
 // List retrieves all categories
-func (r *CategoryRepo) List() ([]domain.Category, error) {
+func (r *categoryRepository) List() ([]domain.Category, error) {
 	rows, err := r.Pool.Query(context.Background(),
 		`SELECT id, name, icon_path, parent_id, created_at, updated_at 
 		 FROM categories ORDER BY created_at DESC`,
@@ -76,7 +76,7 @@ func (r *CategoryRepo) List() ([]domain.Category, error) {
 }
 
 // Update modifies an existing category
-func (r *CategoryRepo) Update(c *domain.Category) error {
+func (r *categoryRepository) Update(c *domain.Category) error {
 	c.UpdatedAt = time.Now()
 
 	_, err := r.Pool.Exec(context.Background(),
@@ -89,7 +89,7 @@ func (r *CategoryRepo) Update(c *domain.Category) error {
 }
 
 // Delete removes a category by UUID
-func (r *CategoryRepo) Delete(id string) error {
+func (r *categoryRepository) Delete(id string) error {
 	_, err := r.Pool.Exec(context.Background(),
 		`DELETE FROM categories WHERE id=$1`, id,
 	)

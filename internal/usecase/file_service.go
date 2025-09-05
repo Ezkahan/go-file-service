@@ -8,16 +8,24 @@ import (
 	"github.com/google/uuid"
 )
 
-type FileService struct {
+type FileService interface {
+	CreateFile(name, iconPath, filePath string, categoryID *string) (*domain.File, error)
+	GetFile(id string) (*domain.File, error)
+	ListFiles() ([]domain.File, error)
+	UpdateFile(id, name, iconPath, filePath string, categoryID *string) error
+	DeleteFile(id string) error
+}
+
+type fileService struct {
 	repo repository.FileRepository
 }
 
-func NewFileService(r repository.FileRepository) *FileService {
-	return &FileService{repo: r}
+func NewFileService(r repository.FileRepository) FileService {
+	return &fileService{repo: r}
 }
 
 // CreateFile makes a new file record
-func (s *FileService) CreateFile(name, iconPath, filePath string, categoryID *string) (*domain.File, error) {
+func (s *fileService) CreateFile(name, iconPath, filePath string, categoryID *string) (*domain.File, error) {
 	f := &domain.File{
 		ID:         uuid.New().String(),
 		Name:       name,
@@ -34,17 +42,17 @@ func (s *FileService) CreateFile(name, iconPath, filePath string, categoryID *st
 }
 
 // GetFile fetches a file by id
-func (s *FileService) GetFile(id string) (*domain.File, error) {
+func (s *fileService) GetFile(id string) (*domain.File, error) {
 	return s.repo.GetByID(id)
 }
 
 // ListFiles returns all files
-func (s *FileService) ListFiles() ([]domain.File, error) {
+func (s *fileService) ListFiles() ([]domain.File, error) {
 	return s.repo.List()
 }
 
 // UpdateFile modifies an existing file
-func (s *FileService) UpdateFile(id, name, iconPath, filePath string, categoryID *string) error {
+func (s *fileService) UpdateFile(id, name, iconPath, filePath string, categoryID *string) error {
 	f := &domain.File{
 		ID:         id,
 		Name:       name,
@@ -57,6 +65,6 @@ func (s *FileService) UpdateFile(id, name, iconPath, filePath string, categoryID
 }
 
 // DeleteFile removes a file by id
-func (s *FileService) DeleteFile(id string) error {
+func (s *fileService) DeleteFile(id string) error {
 	return s.repo.Delete(id)
 }

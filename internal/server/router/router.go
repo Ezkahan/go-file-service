@@ -1,46 +1,23 @@
 package router
 
 import (
-	"github.com/ezkahan/meditation-backend/internal/delivery/http"
+	httpHandler "github.com/ezkahan/meditation-backend/internal/delivery/http/handlers"
 	"github.com/ezkahan/meditation-backend/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-// SetupRouter defines all routes and applies middlewares
-func SetupRouter(categoryHandler *http.CategoryHandler, fileHandler *http.FileHandler) *gin.Engine {
+func SetupRouter(categoryHandler *httpHandler.CategoryHandler, fileHandler httpHandler.FileHandler, authHandler httpHandler.AuthHandler) *gin.Engine {
 	r := gin.Default()
+	api := r.Group("/api")
 
-	// Health check (public)
-	r.GET("/health", func(c *gin.Context) {
+	api.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
-	// Login endpoint (public)
-	r.POST("/login", func(c *gin.Context) {
-		var req struct {
-			Username string `json:"username" binding:"required"`
-			Password string `json:"password" binding:"required"`
-		}
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(400, gin.H{"error": "invalid request"})
-			return
-		}
+	api.POST("/login", authHandler.Login)
 
-		// TODO: validate credentials
-		userID := "123"
-
-		token, err := middleware.GenerateToken(userID)
-		if err != nil {
-			c.JSON(500, gin.H{"error": "could not generate token"})
-			return
-		}
-
-		c.JSON(200, gin.H{"token": token})
-	})
-
-	// Protected routes (JWT middleware)
-	protected := r.Group("/")
-	protected.Use(middleware.JWTMiddleware())
+	protected := api.Group("/admin")
+	protected.Use(middleware.JWTAuthMiddleware())
 
 	categories := protected.Group("/categories")
 	{
