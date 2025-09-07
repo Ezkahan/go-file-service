@@ -1,6 +1,6 @@
 package validators
 
-import "github.com/ezkahan/meditation-backend/internal/domain"
+import "github.com/ezkahan/go-file-service/internal/domain"
 
 type LoginRequest struct {
 	Username string `json:"username" validate:"required"`

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ezkahan/meditation-backend/internal/delivery/http/validators"
-	"github.com/ezkahan/meditation-backend/internal/domain"
-	"github.com/ezkahan/meditation-backend/internal/usecase"
-	"github.com/ezkahan/meditation-backend/internal/utils"
+	"github.com/ezkahan/go-file-service/internal/delivery/http/validators"
+	"github.com/ezkahan/go-file-service/internal/domain"
+	"github.com/ezkahan/go-file-service/internal/usecase"
+	"github.com/ezkahan/go-file-service/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )

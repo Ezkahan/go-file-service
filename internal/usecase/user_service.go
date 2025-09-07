@@ -3,9 +3,9 @@ package usecase
 import (
 	"strings"
 
-	"github.com/ezkahan/meditation-backend/internal/delivery/http/validators"
-	"github.com/ezkahan/meditation-backend/internal/domain"
-	"github.com/ezkahan/meditation-backend/internal/repository"
+	"github.com/ezkahan/go-file-service/internal/delivery/http/validators"
+	"github.com/ezkahan/go-file-service/internal/domain"
+	"github.com/ezkahan/go-file-service/internal/repository"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )

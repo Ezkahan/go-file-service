@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 
-	"github.com/ezkahan/meditation-backend/internal/usecase"
+	"github.com/ezkahan/go-file-service/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
 

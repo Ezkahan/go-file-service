@@ -3,8 +3,8 @@ package usecase
 import (
 	"time"
 
-	"github.com/ezkahan/meditation-backend/internal/domain"
-	"github.com/ezkahan/meditation-backend/internal/repository"
+	"github.com/ezkahan/go-file-service/internal/domain"
+	"github.com/ezkahan/go-file-service/internal/repository"
 	"github.com/google/uuid"
 )
 

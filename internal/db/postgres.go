@@ -3,19 +3,16 @@ package db
 import (
 	"context"
 	"log"
-	"os"
 	"time"
 
+	"github.com/ezkahan/go-file-service/internal/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func NewPostgresPool() *pgxpool.Pool {
-	dsn := os.Getenv("DATABASE_URL")
-	if dsn == "" {
-		log.Fatal("DATABASE_URL is not set")
-	}
+	cfg := config.Load()
 
-	config, err := pgxpool.ParseConfig(dsn)
+	config, err := pgxpool.ParseConfig(cfg.DatabaseURL)
 	if err != nil {
 		log.Fatalf("failed to parse db config: %v", err)
 	}

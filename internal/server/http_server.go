@@ -1,29 +1,29 @@
 package server
 
 import (
-	"context"
 	"fmt"
 	"log"
 
-	"github.com/ezkahan/meditation-backend/internal/config"
-	httpHandler "github.com/ezkahan/meditation-backend/internal/delivery/http/handlers"
-	"github.com/ezkahan/meditation-backend/internal/repository"
-	"github.com/ezkahan/meditation-backend/internal/server/router"
-	"github.com/ezkahan/meditation-backend/internal/usecase"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/ezkahan/go-file-service/internal/config"
+	"github.com/ezkahan/go-file-service/internal/db"
+	httpHandler "github.com/ezkahan/go-file-service/internal/delivery/http/handlers"
+	"github.com/ezkahan/go-file-service/internal/repository"
+	"github.com/ezkahan/go-file-service/internal/server/router"
+	"github.com/ezkahan/go-file-service/internal/usecase"
 )
 
 // RunServer initializes DB, handlers, router, and starts the server
 func RunHTTPServer() {
 	cfg := config.Load()
+	pool := db.NewPostgresPool()
 	// ------------------------
 	// Postgres connection
 	// ------------------------
-	pool, err := pgxpool.New(context.Background(), cfg.DatabaseURL)
-	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
-	}
-	defer pool.Close()
+	// pool, err := pgxpool.New(context.Background(), cfg.DatabaseURL)
+	// if err != nil {
+	// 	log.Fatalf("failed to connect to database: %v", err)
+	// }
+	// defer pool.Close()
 
 	// ------------------------
 	// Repositories & Services

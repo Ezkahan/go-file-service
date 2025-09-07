@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/ezkahan/meditation-backend/internal/domain"
+	"github.com/ezkahan/go-file-service/internal/domain"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
