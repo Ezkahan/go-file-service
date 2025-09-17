@@ -29,8 +29,8 @@ func (s *fileService) CreateFile(name, iconPath, filePath string, categoryID *st
 	f := &domain.File{
 		ID:         uuid.New().String(),
 		Name:       name,
-		IconPath:   iconPath,
-		FilePath:   filePath,
+		IconPath:   &iconPath,
+		FilePath:   &filePath,
 		CategoryID: categoryID,
 		CreatedAt:  time.Now(),
 		UpdatedAt:  time.Now(),
@@ -56,8 +56,8 @@ func (s *fileService) UpdateFile(id, name, iconPath, filePath string, categoryID
 	f := &domain.File{
 		ID:         id,
 		Name:       name,
-		IconPath:   iconPath,
-		FilePath:   filePath,
+		IconPath:   &iconPath,
+		FilePath:   &filePath,
 		CategoryID: categoryID,
 		UpdatedAt:  time.Now(),
 	}

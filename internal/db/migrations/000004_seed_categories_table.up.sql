@@ -1,0 +1,22 @@
+-- Explicit UUIDs for categories
+INSERT INTO categories (id, name) VALUES
+  ('11111111-1111-1111-1111-111111111111', 'Mindfulness'),
+  ('22222222-2222-2222-2222-222222222222', 'Stress Relief'),
+  ('33333333-3333-3333-3333-333333333333', 'Sleep'),
+  ('44444444-4444-4444-4444-444444444444', 'Focus'),
+  ('55555555-5555-5555-5555-555555555555', 'Relaxation'),
+  ('66666666-6666-6666-6666-666666666666', 'Anxiety Reduction'),
+  ('77777777-7777-7777-7777-777777777777', 'Self-Love'),
+  ('88888888-8888-8888-8888-888888888888', 'Body Scan'),
+  ('99999999-9999-9999-9999-999999999999', 'Guided Meditation'),
+  ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Breathing Exercises'),
+  ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Morning Meditation'),
+  ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Evening Meditation'),
+  ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'Gratitude'),
+  ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Visualization'),
+  ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'Kids Meditation'),
+  ('12121212-1212-1212-1212-121212121212', 'Walking Meditation'),
+  ('23232323-2323-2323-2323-232323232323', 'Loving-Kindness'),
+  ('34343434-3434-3434-3434-343434343434', 'Chakra Meditation'),
+  ('45454545-4545-4545-4545-454545454545', 'Mantra Meditation'),
+  ('56565656-5656-5656-5656-565656565656', 'Spiritual Growth');

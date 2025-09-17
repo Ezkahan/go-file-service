@@ -19,7 +19,7 @@ func (s *CategoryService) CreateCategory(name, icon string, parentId *uint) (*do
 	c := &domain.Category{
 		ID:       uuid.New().String(),
 		Name:     name,
-		IconPath: icon,
+		IconPath: &icon,
 		ParentId: parentId,
 	}
 	if err := s.repo.Create(c); err != nil {
@@ -43,7 +43,7 @@ func (s *CategoryService) UpdateCategory(id, name, icon string, parentId *uint) 
 	c := &domain.Category{
 		ID:       id,
 		Name:     name,
-		IconPath: icon,
+		IconPath: &icon,
 		ParentId: parentId,
 	}
 	return s.repo.Update(c)

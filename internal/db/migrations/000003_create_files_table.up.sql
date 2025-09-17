@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS files (
-    id UUID PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL UNIQUE,
     icon_path TEXT,
     file_path TEXT NOT NULL,

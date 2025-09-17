@@ -24,7 +24,6 @@ func NewCategoryRepository(pool *pgxpool.Pool) *categoryRepository {
 	return &categoryRepository{Pool: pool}
 }
 
-// Create inserts a new category
 func (r *categoryRepository) Create(c *domain.Category) error {
 	now := time.Now()
 	c.CreatedAt = now
@@ -38,7 +37,6 @@ func (r *categoryRepository) Create(c *domain.Category) error {
 	return err
 }
 
-// GetByID retrieves a category by UUID
 func (r *categoryRepository) GetByID(id string) (*domain.Category, error) {
 	row := r.Pool.QueryRow(context.Background(),
 		`SELECT id, name, icon_path, parent_id, created_at, updated_at 
@@ -52,7 +50,6 @@ func (r *categoryRepository) GetByID(id string) (*domain.Category, error) {
 	return &c, nil
 }
 
-// List retrieves all categories
 func (r *categoryRepository) List() ([]domain.Category, error) {
 	rows, err := r.Pool.Query(context.Background(),
 		`SELECT id, name, icon_path, parent_id, created_at, updated_at 
@@ -75,7 +72,6 @@ func (r *categoryRepository) List() ([]domain.Category, error) {
 	return categories, nil
 }
 
-// Update modifies an existing category
 func (r *categoryRepository) Update(c *domain.Category) error {
 	c.UpdatedAt = time.Now()
 
@@ -88,7 +84,6 @@ func (r *categoryRepository) Update(c *domain.Category) error {
 	return err
 }
 
-// Delete removes a category by UUID
 func (r *categoryRepository) Delete(id string) error {
 	_, err := r.Pool.Exec(context.Background(),
 		`DELETE FROM categories WHERE id=$1`, id,
