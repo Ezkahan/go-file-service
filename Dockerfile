@@ -1,5 +1,5 @@
 # Multi-stage Dockerfile for a Go app. Adjust BUILD_PATH if your main package lives elsewhere.
-FROM golang:1.21-alpine AS builder
+FROM golang:1.25.3-alpine AS builder
 RUN apk add --no-cache git ca-certificates
 WORKDIR /src
 
