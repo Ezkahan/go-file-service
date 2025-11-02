@@ -3,7 +3,7 @@ FROM golang:1.25.3-alpine AS builder
 RUN apk add --no-cache git ca-certificates
 WORKDIR /src
 
-ARG BUILD_PATH=.
+ARG BUILD_PATH=./cmd/app
 ARG BINARY=meditation-app
 
 # Cache deps
