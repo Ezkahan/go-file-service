@@ -15,6 +15,7 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=meditation
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/meditation?sslmode=disable
       - JWT_SECRET=ZEHINLI_ULGAM_CORP
     depends_on:
       - postgres
