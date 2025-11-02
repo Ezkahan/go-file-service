@@ -1,5 +1,5 @@
 [Unit]
-Description=Meditation
+Description=MeditationApp
 ConditionPathExists=/var/www/apps/
 After=network.target
 
