@@ -53,6 +53,8 @@ exec /app/meditation-app
 EOF
 
 RUN chmod +x /app/entrypoint.sh
+RUN addgroup -S app && adduser -S -G app app
+USER app
 
 EXPOSE 8080
 ENTRYPOINT ["/app/entrypoint.sh"]
