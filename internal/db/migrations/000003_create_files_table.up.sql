@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS files (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL UNIQUE,
     icon_path TEXT,
-    file_path TEXT NOT NULL,
+    file_path TEXT NOT NULL DEFAULT '',
     category_id UUID REFERENCES categories(id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()

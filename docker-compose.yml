@@ -26,7 +26,7 @@ services:
       - meditation-network
 
   postgres:
-    image: postgres:15-alpine
+    image: postgres:17-alpine
     container_name: meditation-db
     restart: unless-stopped
     environment:
