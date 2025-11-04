@@ -26,7 +26,6 @@ RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.1/
 # Copy binary and migrations
 COPY --from=builder /out/meditation-app /app/meditation-app
 COPY internal/db/migrations internal/db/migrations
-COPY .env .env
 
 # --- create entrypoint script while still root ---
 COPY <<'EOF' /app/entrypoint.sh
