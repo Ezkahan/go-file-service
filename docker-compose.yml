@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./.env:/app/.env:ro
+      - ./internal/db/migrations:/app/internal/db/migrations:ro
     ports:
       - "8080:8080"
     environment:
