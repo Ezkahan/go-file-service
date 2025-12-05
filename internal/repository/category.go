@@ -30,21 +30,21 @@ func (r *categoryRepository) Create(c *domain.Category) error {
 	c.UpdatedAt = now
 
 	_, err := r.Pool.Exec(context.Background(),
-		`INSERT INTO categories (id, name, icon_path, parent_id, created_at, updated_at) 
-		 VALUES ($1, $2, $3, $4, $5, $6)`,
-		c.ID, c.Name, c.IconPath, c.ParentId, c.CreatedAt, c.UpdatedAt,
+		`INSERT INTO categories (id, name, icon_path, background_image, parent_id, created_at, updated_at) 
+		VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+		c.ID, c.Name, c.IconPath, c.BackgroundImage, c.ParentId, c.CreatedAt, c.UpdatedAt,
 	)
 	return err
 }
 
 func (r *categoryRepository) GetByID(id string) (*domain.Category, error) {
 	row := r.Pool.QueryRow(context.Background(),
-		`SELECT id, name, icon_path, parent_id, created_at, updated_at 
-		 FROM categories WHERE id=$1`, id,
+		`SELECT id, name, icon_path, background_image, parent_id, created_at, updated_at 
+		FROM categories WHERE id=$1`, id,
 	)
 
 	var c domain.Category
-	if err := row.Scan(&c.ID, &c.Name, &c.IconPath, &c.ParentId, &c.CreatedAt, &c.UpdatedAt); err != nil {
+	if err := row.Scan(&c.ID, &c.Name, &c.IconPath, &c.BackgroundImage, &c.ParentId, &c.CreatedAt, &c.UpdatedAt); err != nil {
 		return nil, err
 	}
 	return &c, nil
@@ -52,8 +52,15 @@ func (r *categoryRepository) GetByID(id string) (*domain.Category, error) {
 
 func (r *categoryRepository) List() ([]domain.Category, error) {
 	rows, err := r.Pool.Query(context.Background(),
-		`SELECT id, name, icon_path, parent_id, created_at, updated_at 
-		 FROM categories ORDER BY created_at DESC`,
+		`SELECT c.id, c.name, c.icon_path, c.background_image, c.parent_id, c.created_at, c.updated_at,
+			   COALESCE(f.files_count, 0) AS files_count
+		FROM categories c
+		LEFT JOIN (
+			SELECT category_id, COUNT(*) AS files_count
+			FROM files
+			GROUP BY category_id
+		) f ON c.id = f.category_id
+		ORDER BY c.created_at DESC`,
 	)
 	if err != nil {
 		return nil, err
@@ -63,7 +70,7 @@ func (r *categoryRepository) List() ([]domain.Category, error) {
 	var categories []domain.Category
 	for rows.Next() {
 		var c domain.Category
-		if err := rows.Scan(&c.ID, &c.Name, &c.IconPath, &c.ParentId, &c.CreatedAt, &c.UpdatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.Name, &c.IconPath, &c.BackgroundImage, &c.ParentId, &c.CreatedAt, &c.UpdatedAt, &c.FilesCount); err != nil {
 			return nil, err
 		}
 		categories = append(categories, c)
@@ -77,9 +84,9 @@ func (r *categoryRepository) Update(c *domain.Category) error {
 
 	_, err := r.Pool.Exec(context.Background(),
 		`UPDATE categories 
-		 SET name=$1, icon_path=$2, parent_id=$3, updated_at=$4 
-		 WHERE id=$5`,
-		c.Name, c.IconPath, c.ParentId, c.UpdatedAt, c.ID,
+		SET name=$1, icon_path=$2, background_image=$3, parent_id=$4, updated_at=$5 
+		WHERE id=$6`,
+		c.Name, c.IconPath, c.BackgroundImage, c.ParentId, c.UpdatedAt, c.ID,
 	)
 	return err
 }
